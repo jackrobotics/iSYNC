@@ -12,7 +12,7 @@
 #endif
 
 #define Version "iSYNC library Version 0.1"
-#define SERVER_API "www.isync.pro"
+#define SERVER_API "sv1.isync.pro"
 
 class iSYNC
 {
