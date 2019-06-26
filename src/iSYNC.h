@@ -11,10 +11,13 @@
 #elif defined(ESP32)
     #include <WiFi.h>
     #include <WiFiClientSecure.h>
+#elif defined(K210)
+    #include "WiFiEsp.h"
+    #define Client WiFiEspClient
 #endif
 
 
-#define Version "\niSYNC library Version 0.2"
+#define Version "\niSYNC library Version 0.2.2"
 #define SERVER_API "api.isync.pro"
 #define SERVER_MQTT "mq.isync.pro"
 
@@ -34,6 +37,7 @@ class iSYNC
         MQTT_CALLBACK_SIGNATURE;
         String auth,username;
         Client *clientSecure;
+
     public:
         iSYNC(Client&);
         void debugMode(bool);

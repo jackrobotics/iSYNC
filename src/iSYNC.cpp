@@ -45,13 +45,16 @@ String iSYNC::HTTP_GET_RAW(String key, String auth)
     if (debug)
         Serial.print("\nStarting connection to server...");
 
+#if defined(K210)
+    if (!clientSecure->connectSSL(SERVER_API, 443))
+#else
     if (!clientSecure->connect(SERVER_API, 443))
+#endif
+    // if (!clientSecure->connect(SERVER_API, 443))
     {
         if (debug)
             Serial.println("Connection failed!");
-    }
-    else
-    {
+    }else{
         if (debug)
             Serial.println("Connected to server!");
         String _host = "Host: ";
@@ -68,6 +71,12 @@ String iSYNC::HTTP_GET_RAW(String key, String auth)
             if (line == "\r")
                 break;
         }
+
+#if defined(K210)
+        // wait response
+        long _startMillis = millis();
+        while (!clientSecure->available() and (millis() - _startMillis < 2000));
+#endif
 
         // if there are incoming bytes available
         while (clientSecure->available())
@@ -99,7 +108,12 @@ String iSYNC::HTTP_POST(String key, String auth, String msg)
     if (debug)
         Serial.print("\nStarting connection to server...");
 
+#if defined(K210)
+    if (!clientSecure->connectSSL(SERVER_API, 443))
+#else
     if (!clientSecure->connect(SERVER_API, 443))
+#endif
+    // if (!clientSecure->connect(SERVER_API, 443))
     {
         if (debug)
             Serial.println("Connection failed!");
@@ -122,6 +136,12 @@ String iSYNC::HTTP_POST(String key, String auth, String msg)
             if (line == "\r")
                 break;
         }
+        
+#if defined(K210)
+        // wait response
+        long _startMillis = millis();
+        while (!clientSecure->available() and (millis() - _startMillis < 2000));
+#endif
 
         // if there are incoming bytes available
         while (clientSecure->available())
