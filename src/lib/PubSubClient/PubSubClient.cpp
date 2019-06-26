@@ -316,6 +316,13 @@ boolean PubSubClient::loop() {
                 pingOutstanding = true;
             }
         }
+        
+#if defined(K210)
+        // wait response
+        unsigned long _startMillis = millis();
+        while (!_client->available() and (millis() - _startMillis < 2000UL));
+#endif
+
         if (_client->available()) {
             uint8_t llen;
             uint16_t len = readPacket(&llen);
