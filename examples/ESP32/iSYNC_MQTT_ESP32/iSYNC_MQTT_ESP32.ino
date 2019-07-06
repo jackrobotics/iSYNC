@@ -32,7 +32,7 @@ void setup() {
 
 		iSYNC.begin(ssid,pass);
 		iSYNC.mqInit(iSYNC_USERNAME,iSYNC_AUTH);
-		iSYNC.mqCallback(callback);
+		iSYNC.MQTT->setCallback(callback);
 		connectMQTT();
 }
 

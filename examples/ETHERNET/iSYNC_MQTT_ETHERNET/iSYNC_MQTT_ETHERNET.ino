@@ -53,7 +53,7 @@ void setup()
 		Serial.println(Ethernet.localIP());
 	}
 	iSYNC.mqInit(iSYNC_USERNAME, iSYNC_AUTH);
-	iSYNC.mqCallback(callback);
+	iSYNC.MQTT->setCallback(callback);
 	connectMQTT();
 }
 
