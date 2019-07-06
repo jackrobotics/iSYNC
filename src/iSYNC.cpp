@@ -5,7 +5,7 @@ iSYNC::iSYNC(Client& netclient)
     debug = false;
     httpRuning = false;
 }
-void iSYNC::debugMode(bool _debug = true)
+void iSYNC::debugMode(bool _debug)
 {
     debug = _debug;
 }
@@ -207,19 +207,19 @@ void iSYNC::mqInit(String _username, String _auth,bool secure)
 
 bool iSYNC::mqPub(String key, String msg)
 {
-    if(debug)Serial.println("[iSYNC DEBUG]: MQTT Publish -> "+msg);
+    if(debug)Serial.println("\n[iSYNC DEBUG]: MQTT Publish -> "+msg);
     String _topic = "iSYNC/" + auth + "/" + key;
     return MQTT->publish(_topic.c_str(), msg.c_str());
 }
 bool iSYNC::mqSub(String key)
 {
-    if(debug)Serial.println("[iSYNC DEBUG]: MQTT Subscribe key: "+key);
+    if(debug)Serial.println("\n[iSYNC DEBUG]: MQTT Subscribe key: "+key);
     String _topic = "iSYNC/" + auth + "/" + key;
     return MQTT->subscribe(_topic.c_str());
 }
 bool iSYNC::mqSubProject()
 {
-    if(debug)Serial.println("[iSYNC DEBUG]: MQTT Subscribe project.");
+    if(debug)Serial.println("\n[iSYNC DEBUG]: MQTT Subscribe project.");
     String _topic = "iSYNC/" + auth + "/#";
     return MQTT->subscribe(_topic.c_str());
 }

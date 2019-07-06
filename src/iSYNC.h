@@ -33,7 +33,7 @@ class iSYNC
 
     public:
         iSYNC(Client&);
-        void debugMode(bool);
+        void debugMode(bool _debug = true);
         void begin(String,String);  //setup wifi
 
         /**
