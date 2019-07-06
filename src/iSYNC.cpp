@@ -12,17 +12,16 @@ void iSYNC::debugMode(bool _debug)
 void iSYNC::begin(String ssid, String password)
 {
 #if defined(ESP8266) || defined(ESP32)
-    if (debug)
+    if (debug){
         Serial.print("[iSYNC DEBUG]: Connect to SSID: ");
-    if (debug)
         Serial.println(ssid);
+    }
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid.c_str(), password.c_str());
     while (WiFi.status() != WL_CONNECTED)
     {
-        if (debug)
-            Serial.print(".");
-        // wait 1 second for re-trying
+        if (debug)Serial.print(".");
+        // wait 0.1 second for re-trying
         delay(100);
     }
     if (debug){
