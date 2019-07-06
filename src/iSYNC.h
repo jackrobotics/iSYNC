@@ -17,7 +17,7 @@
 #endif
 
 
-#define Version "\niSYNC library Version 0.2.4"
+#define Version "\n[iSYNC]: iSYNC library Version 0.2.4"
 #define SERVER_API "api.isync.pro"
 #define SERVER_MQTT "mq.isync.pro"
 
