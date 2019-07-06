@@ -13,7 +13,7 @@ void iSYNC::begin(String ssid, String password)
 {
 #if defined(ESP8266) || defined(ESP32)
     if (debug)
-        Serial.print("Connect to SSID: ");
+        Serial.print("[iSYNC DEBUG]: Connect to SSID: ");
     if (debug)
         Serial.println(ssid);
     WiFi.mode(WIFI_STA);
@@ -26,7 +26,8 @@ void iSYNC::begin(String ssid, String password)
         delay(100);
     }
     if (debug)
-        Serial.print("Connected to ");
+        Serial.println();
+        Serial.print("[iSYNC DEBUG]: Connected to ");
     if (debug)
         Serial.println(ssid);
 #endif
@@ -37,13 +38,11 @@ String iSYNC::HTTP_GET_RAW(String key, String auth)
     String inMSG = "";
     if (httpRuning)
     {
-        if (debug)
-            Serial.println("\nHTTP Runing... please wait!");
+        if (debug)Serial.println("\n[iSYNC DEBUG]: HTTP Runing... please wait!");
         return "";
     }
     httpRuning = true;
-    if (debug)
-        Serial.print("\nStarting connection to server...");
+    if (debug)Serial.print("\n[iSYNC DEBUG]: Starting connection to server...");
 
 #if defined(K210)
     if (!clientSecure->connectSSL(SERVER_API, 443))
@@ -52,11 +51,9 @@ String iSYNC::HTTP_GET_RAW(String key, String auth)
 #endif
     // if (!clientSecure->connect(SERVER_API, 443))
     {
-        if (debug)
-            Serial.println("Connection failed!");
+        if (debug)Serial.println("[iSYNC DEBUG]: Connection failed!");
     }else{
-        if (debug)
-            Serial.println("Connected to server!");
+        if (debug)Serial.println("[iSYNC DEBUG]: Connected to server!");
         String _host = "Host: ";
         _host += SERVER_API;
         // Make a HTTP request:
@@ -86,7 +83,7 @@ String iSYNC::HTTP_GET_RAW(String key, String auth)
         }
         if (debug)
         {
-            Serial.println("Received Data ::.");
+            Serial.println("[iSYNC DEBUG]: Received Data ::.");
             Serial.println(inMSG);
         }
         clientSecure->stop();
@@ -100,13 +97,11 @@ String iSYNC::HTTP_POST(String key, String auth, String msg)
     String inMSG = "";
     if (httpRuning)
     {
-        if (debug)
-            Serial.println("\nHTTP Runing... please wait!");
+        if (debug)Serial.println("\n[iSYNC DEBUG]: HTTP Runing... please wait!");
         return "";
     }
     httpRuning = true;
-    if (debug)
-        Serial.print("\nStarting connection to server...");
+    if (debug)Serial.print("\n[iSYNC DEBUG]: Starting connection to server...");
 
 #if defined(K210)
     if (!clientSecure->connectSSL(SERVER_API, 443))
@@ -115,13 +110,11 @@ String iSYNC::HTTP_POST(String key, String auth, String msg)
 #endif
     // if (!clientSecure->connect(SERVER_API, 443))
     {
-        if (debug)
-            Serial.println("Connection failed!");
+        if (debug)Serial.println("[iSYNC DEBUG]: Connection failed!");
     }
     else
     {
-        if (debug)
-            Serial.println("Connected to server!");
+        if (debug)Serial.println("[iSYNC DEBUG]: Connected to server!");
         String _host = "Host: ";
         _host += SERVER_API;
         // Make a HTTP request:
@@ -151,7 +144,7 @@ String iSYNC::HTTP_POST(String key, String auth, String msg)
         }
         if (debug)
         {
-            Serial.println("Send Data ::.");
+            Serial.println("[iSYNC DEBUG]: Send Data ::.");
             Serial.println(inMSG);
         }
         clientSecure->stop();
@@ -182,7 +175,7 @@ bool iSYNC::mqConnect()
 {
     if (!mqConnected())
     {
-        if(debug)Serial.print("MQTT connection...");
+        if(debug)Serial.print("[iSYNC DEBUG]: MQTT connection...");
         String clientId = "";
         clientId = "ArduinoClient-" + username + "-" + String(random(0xffff), HEX);
         
@@ -192,7 +185,7 @@ bool iSYNC::mqConnect()
         }else{
             return false;
         }
-    }else return false;
+    }else return true;
 }
 void iSYNC::mqLoop()
 {
@@ -203,7 +196,7 @@ void iSYNC::mqInit(String _username, String _auth){
 }
 void iSYNC::mqInit(String _username, String _auth,bool secure)
 {
-    if (debug)Serial.print("MQTT Init...");
+    if (debug)Serial.print("[iSYNC DEBUG]: MQTT Init...");
     username = _username;
     auth = _auth;
     MQTT = new PubSubClient(*clientSecure);
@@ -214,19 +207,19 @@ void iSYNC::mqInit(String _username, String _auth,bool secure)
 
 bool iSYNC::mqPub(String key, String msg)
 {
-    if(debug)Serial.println("MQTT Publish -> "+msg);
+    if(debug)Serial.println("[iSYNC DEBUG]: MQTT Publish -> "+msg);
     String _topic = "iSYNC/" + auth + "/" + key;
     return MQTT->publish(_topic.c_str(), msg.c_str());
 }
 bool iSYNC::mqSub(String key)
 {
-    if(debug)Serial.println("MQTT Subscribe key."+key);
+    if(debug)Serial.println("[iSYNC DEBUG]: MQTT Subscribe key: "+key);
     String _topic = "iSYNC/" + auth + "/" + key;
     return MQTT->subscribe(_topic.c_str());
 }
 bool iSYNC::mqSubProject()
 {
-    if(debug)Serial.println("MQTT Subscribe project.");
+    if(debug)Serial.println("[iSYNC DEBUG]: MQTT Subscribe project.");
     String _topic = "iSYNC/" + auth + "/#";
     return MQTT->subscribe(_topic.c_str());
 }
