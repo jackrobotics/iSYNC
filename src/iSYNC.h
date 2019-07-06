@@ -17,16 +17,9 @@
 #endif
 
 
-#define Version "\niSYNC library Version 0.2.3"
+#define Version "\niSYNC library Version 0.2.4"
 #define SERVER_API "api.isync.pro"
 #define SERVER_MQTT "mq.isync.pro"
-
-#if defined(ESP8266) || defined(ESP32)
-    #include <functional>
-    #define MQTT_CALLBACK_SIGNATURE std::function<void(char*, uint8_t*, unsigned int)> callback
-#else
-    #define MQTT_CALLBACK_SIGNATURE void (*callback)(char*, uint8_t*, unsigned int)
-#endif
 
 class iSYNC
 {
@@ -50,12 +43,10 @@ class iSYNC
         String HTTP_POST(String,String,String);
         String HTTP_GET(String,String);
         String getPayload(String);
-
         
         PubSubClient *MQTT;
         void mqInit(String, String);
         void mqInit(String, String, bool);
-        iSYNC& mqCallback(MQTT_CALLBACK_SIGNATURE);
         void mqLoop();
         bool mqPub(String,String);
         bool mqSub(String);

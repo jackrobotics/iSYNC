@@ -164,16 +164,14 @@ String iSYNC::HTTP_GET(String key, String auth)
 {
     StaticJsonDocument<200> obj;
     String json = HTTP_GET_RAW(key, auth);
-    DeserializationError error = deserializeJson(obj, json);
+    deserializeJson(obj, json);
     return obj[0];
 }
 
 String iSYNC::getPayload(String json)
 {
     StaticJsonDocument<200> obj;
-    DeserializationError error = deserializeJson(obj, json);
-    if (debug && error)
-        Serial.println("Error deserializeJson");
+    deserializeJson(obj, json);
     String payload = obj["payload"];
     return payload;
 }
@@ -194,7 +192,7 @@ bool iSYNC::mqConnect()
         }else{
             return false;
         }
-    }
+    }else return false;
 }
 void iSYNC::mqLoop()
 {
@@ -213,13 +211,7 @@ void iSYNC::mqInit(String _username, String _auth,bool secure)
     else MQTT->setServer(SERVER_MQTT, 1883);
     if (debug)Serial.println("Success");
 }
-iSYNC &iSYNC::mqCallback(MQTT_CALLBACK_SIGNATURE)
-{
-    MQTT->setCallback(callback);
-    String clientId = "";
-    clientId = "ArduinoClient-" + username + "-" + String(random(0xffff), HEX);
-    MQTT->connect(clientId.c_str(), username.c_str(), auth.c_str());
-}
+
 bool iSYNC::mqPub(String key, String msg)
 {
     if(debug)Serial.println("MQTT Publish -> "+msg);
