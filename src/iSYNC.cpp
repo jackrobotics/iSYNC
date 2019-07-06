@@ -25,11 +25,11 @@ void iSYNC::begin(String ssid, String password)
         // wait 1 second for re-trying
         delay(100);
     }
-    if (debug)
+    if (debug){
         Serial.println();
         Serial.print("[iSYNC DEBUG]: Connected to ");
-    if (debug)
         Serial.println(ssid);
+    }
 #endif
 }
 
